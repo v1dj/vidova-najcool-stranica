@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<title>Posljednji pet posjetitelja!</title>
+
+
+		<script type="text/javascript">
+			// alert("test2");
+			// console.log("test");
+			
+			// var ime = prompt("Kako se zoves?");
+			// alert("ti se zoves:" + ime);
+						
+			</script>
+
+	</head>
+
+
+
+	<body>
+		<h1>Posljednji pet posjetitelja!</h1>
+
+		<p>Posljednji korisnici:</p>
+		<p id="mjesto_za_tvoje_ime"></p>
+
+
+
+		<script type="text/javascript">
+
+
+			// s ovim cemo dohvatiti iz cookia puno imena upisanih
+			// ako nema imena, kreiramo novu varijablu koja drzi array koji drzi imena
+			var imena_cookie = getCookie("imena");
+			if (imena_cookie == undefined) {
+				imena = [];
+			} else {
+				var imena = JSON.parse(imena_cookie);
+			}
+			
+			// ovdje pitamo korisnika za ime
+			var ime = prompt("Kako se zoves?");
+
+			// samo ako je uneseno cemo zapisati
+			if (ime !== undefined && ime !== null && ime != "") {
+				// to ime spremimo u varijablu imena kao clan arraya
+				imena.push(ime);
+
+				// zelimo samo zadnjih 5 prikazati
+				// ako je vise od 5, obrisi prvi clan arraya (niza)
+				if (imena.length >= 6) {
+					imena.shift();
+				}
+			}
+
+			// ovdje cemo prikazati sva imena
+			var a = document.getElementById("mjesto_za_tvoje_ime");
+			a.innerHTML = imena;
+
+			// ovdje cemo pretvoriti array imena u json i to spremiti u coookie
+			setCookie("imena", JSON.stringify(imena), 4 * 365);
+
+
+
+
+
+
+
+
+
+
+			function setCookie(name,value,days) {
+				var expires = "";
+				if (days) {
+					var date = new Date();
+					date.setTime(date.getTime() + (days*24*60*60*1000));
+					expires = "; expires=" + date.toUTCString();
+				}
+				document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+			}
+			function getCookie(name) {
+				var nameEQ = name + "=";
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			}
+			function eraseCookie(name) {   
+				document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			}			
+			
+		</script>
+
+
+
+	</body>
+	
+
+<html>
